@@ -141,3 +141,52 @@ decode xs = encode (-f) xs
   where f = head (position (minimum chitab) chitab)
         chitab = [chisqrt (rotate k observe) table | k <- [0..25]]
         observe = freqs xs
+
+
+{- chap 6 -}
+
+and1 :: [Bool] -> Bool
+and1 [] = True
+and1 (x:xs) = x && and1 xs
+
+concat1 :: [[a]] -> [a]
+concat1 [] = []
+concat1 (x:xs) = x ++ concat1 xs
+
+replicate1 :: Int -> a -> [a]
+replicate1 0 _ = []
+replicate1 n x = (x : replicate1 (n-1) x)
+
+(!!!) :: [a] -> Int -> a
+(!!!) (x:_) 0 = x
+(!!!) (_:xs) n = (!!!) xs (n-1)
+
+
+elem1 :: Eq a => a -> [a] -> Bool
+elem1 x (y:ys) | x == y = True
+               | otherwise = elem1 x ys
+elem1 _ [] = False
+
+merge :: Ord a => [a] -> [a] -> [a]
+merge [] xs = xs
+merge ys [] = ys
+merge (x:xs) (y:ys) | x <= y  = (x : merge xs (y:ys))
+                    | otherwise = (y : merge (x:xs) ys)
+
+msort :: Ord a => [a] -> [a]
+msort [] = []
+msort [x] = [x]
+msort xs = let (fst,snd) = halve xs in merge (msort fst) (msort snd)
+
+all' :: (a -> Bool) -> [a] -> Bool
+all' _ [] = True
+all' p (x:xs) = (p x) && (all' p xs)
+
+
+any' :: (a -> Bool) -> [a] -> Bool
+any' _ [] = False
+any' p (x:xs) = (p x) || (any' p xs)
+
+remdup :: Eq a => [a] -> [a]
+remdup [] = []
+remdup (x:xs) = x : filter (/= x) (remdup xs)
