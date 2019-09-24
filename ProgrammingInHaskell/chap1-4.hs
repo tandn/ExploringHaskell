@@ -45,3 +45,26 @@ twice f x = f (f x)
 
 
 {- chap 4 -}
+halve :: [a] -> ([a],[a])
+halve xs = let n = length xs `div` 2 in (take n xs, drop n xs)
+
+
+and' :: Bool -> Bool -> Bool
+and' a b | a == b = if a == True then True else False
+       | otherwise = False
+
+and'' :: Bool -> Bool -> Bool
+and'' a b | a == True = b
+          | a == False = False
+
+mul :: Int -> Int -> Int -> Int
+mul = \x y z -> x * y * z
+
+
+
+luhnDouble :: Int -> Int
+luhnDouble n | n*2 > 9 = n*2 - 9
+             | otherwise = n*2
+
+luhn :: Int -> Int -> Int -> Int -> Bool
+luhn x y z t = (luhnDouble x + y + luhnDouble z + t) `mod` 10 == 0 
