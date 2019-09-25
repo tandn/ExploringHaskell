@@ -190,3 +190,20 @@ any' p (x:xs) = (p x) || (any' p xs)
 remdup :: Eq a => [a] -> [a]
 remdup [] = []
 remdup (x:xs) = x : filter (/= x) (remdup xs)
+
+{- prime tests -}
+nat = [2..]
+
+{- approach 1 -}
+ld n = ldf 2 n
+ldf k n | rem n k == 0 = k
+        | k^2 > n = n
+        | otherwise = ldf (k+1) n
+prime n = ld n == n
+
+primes1 = [x | x <- nat, prime x]
+
+{- approach 2 -}
+seive (x:xs) = x : seive [y | y <- xs, rem y x /= 0]
+primes2 = seive nat 
+
