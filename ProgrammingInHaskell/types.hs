@@ -54,3 +54,38 @@ p4 = Imply (And (Var 'A') (Imply (Var 'A') (Var 'B'))) (Var 'B')
 
 {- abstract machine -}
 
+data Expr = Val Int 
+          | Add Expr Expr
+          | Mul Expr Expr
+
+
+e :: Expr
+e = Add (Add (Val 2) (Val 3)) (Val 4)
+
+e' :: Expr
+e' = Add (Val 2) (Mul (Val 3) (Val 4))
+
+type Control = [Op]
+
+data Op = EVAL Expr 
+        | ADD  
+        | MUL  
+        | ADD1 Int 
+        | MUL1 Int 
+
+eval' :: Expr -> Control -> Int
+eval' (Val n) c = exec c n
+eval' (Add e1 e2) c = eval' e1 (ADD : EVAL e2 : c)
+eval' (Mul e1 e2) c = eval' e1 (MUL : EVAL e2 : c)
+
+exec :: Control -> Int -> Int
+exec [] n = n
+exec (ADD : EVAL e : c) n = eval' e (ADD1 n : c)
+exec (ADD1 m : c) n = exec c (m+n)
+exec (MUL : EVAL e : c) n = eval' e (MUL1 n : c)
+exec (MUL1 m : c) n = exec c (m * n)
+
+value :: Expr -> Int
+value e = eval' e []
+
+
