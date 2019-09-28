@@ -1,4 +1,4 @@
-{- The SMC machine http://homepages.inf.ed.ac.uk/gdp/publications/sos_jlap.pdf pg. 15 =}
+{- The SMC machine http://homepages.inf.ed.ac.uk/gdp/publications/sos_jlap.pdf pg. 15 -}
 type V = Char
 type T = Bool 
 type N = Int
